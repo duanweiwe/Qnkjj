@@ -176,7 +176,6 @@ class Person(models.Model):
     person_org_position = models.TextField(verbose_name='在国内外团体的任职情况', help_text='在国内外团体的任职情况')
     person_social_position = models.TextField(verbose_name='社会职务', help_text='担任省级以上人大代表、政协委员、党代会代表及以上职 务')
 
-
     def __unicode__(self):
         return self.person_name
 
@@ -184,10 +183,10 @@ class Person(models.Model):
 class Study(models.Model):
     study_begin = models.DateField(verbose_name='起始年月', help_text='起始年月')
     study_end = models.DateField(verbose_name='结束年月', help_text='结束年月')
-    study_place = models.CharField(verbose_name='校及院系名称', help_text='校及院系名称')
-    study_major = models.CharField(verbose_name='专业', help_text='专业')
-    study_degree = models.CharField(verbose_name='学位', help_text='学位')
-    person=models.ForeignKey(Person,related_name='study')
+    study_place = models.CharField(max_length=50, verbose_name='校及院系名称', help_text='校及院系名称')
+    study_major = models.CharField(max_length=30, verbose_name='专业', help_text='专业')
+    study_degree = models.CharField(max_length=20, verbose_name='学位', help_text='学位')
+    person = models.ForeignKey(Person, related_name='study')
 
     def __unicode__(self):
         return self.study_major
@@ -196,9 +195,9 @@ class Study(models.Model):
 class Experience(models.Model):
     exp_begin = models.DateField(verbose_name='起始年月', help_text='从大专或大学开始')
     exp_end = models.DateField(verbose_name='结束年月', help_text='结束年月')
-    exp_place = models.CharField(verbose_name='工作单位', help_text='工作单位')
-    occupation = models.CharField(verbose_name='职务/职称', help_text='职务/职称')
-    person = models.ForeignKey(Person,related_name='experiences')
+    exp_place = models.CharField(max_length=120, verbose_name='工作单位', help_text='工作单位')
+    occupation = models.CharField(max_length=50, verbose_name='职务/职称', help_text='职务/职称')
+    person = models.ForeignKey(Person, related_name='experiences')
 
     def __unicode__(self):
         return self.occupation
@@ -214,6 +213,7 @@ class Fund(models.Model):
 
     def __unicode__(self):
         return self.fund_name
+
 
 class Project(models.Model):
     STATUS_CHOICE = (
@@ -335,9 +335,11 @@ class Achievements(models.Model):
     achievements=models.TextField(verbose_name='主要科学技术成就和贡献',help_text='应以国内取得的成果为主，并均应为主要完成人或主要贡献者')
     person = models.OneToOneField(Person, related_name='achievements')
 
+
 class ProjectRecommendOpinion(models.Model):
     project_recommend_opinion = models.TextField(verbose_name='推荐单位意见', help_text='推荐单位意见')
     project = models.OneToOneField(Project, related_name='project_recommend_opinion')
+
 
 class WorkUnitRecommendOpinion(models.Model):
     recommend_opinion = models.TextField(verbose_name='工作单位意见', help_text='工作单位意见')

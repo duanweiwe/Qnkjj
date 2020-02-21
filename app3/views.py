@@ -1,28 +1,22 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from app3 import forms
-from app3 import models
-from p2.settings import BASE_DIR
-from django.http import StreamingHttpResponse, HttpResponse
-
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics
-from xhtml2pdf.default import DEFAULT_FONT
-
-import shutil
-import PyPDF2
-import StringIO
 
 
-import datetime
-import os
-import pypinyin
-import pdfkit
-import xlwt
+#DEFAULT_FONT['helvetica'] = 'st'
 
+
+def app3_login(request):
+    if request.method == 'GET':
+        return render(request, 'app3/app3_login.html', {})
+    else:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            return render(request, 'app3/app3_notice.html')
+        else:
+            error_message = '用户名或密码错误'
+            return render(request, 'app3/app3_login.html', {'error_message': error_message, 'username': username})
 

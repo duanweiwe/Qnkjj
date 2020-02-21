@@ -1,0 +1,269 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title>中国水土保持学会科学技术奖评奖系统</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- basic styles -->
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+
+    <!--[if IE 7]>
+		  <link rel="stylesheet" href="/static/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="{% static 'css/validationEngine.jquery.css' %}"/>
+
+    <!-- fonts -->
+
+    {#		<link rel="stylesheet" href="http://fonts.useso.com/css?family=Open+Sans:400,300" />#}
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="/static/css/ace.min.css"/>
+    <link rel="stylesheet" href="/static/css/ace-rtl.min.css"/>
+
+    <!--[if lte IE 8]>
+		  <link rel="stylesheet" href="static/css/ace-ie.min.css" />
+		<![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lt IE 9]>
+		<script src="/static/js/html5shiv.js"></script>
+		<script src="/static/js/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body class="login-layout"
+      style="">
+<div class="main-container">
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="login-container">
+                    <div class="space-30"></div>
+                    <div class="space-30"></div>
+                    <div class="space-30"></div>
+                    <div class="space-10"></div>
+                    <div class="center">
+                        <h1>
+                            <i class="icon-leaf green"></i>
+                            <div class="white">中国水土保持学会</div>
+                            <div class="space-6"></div>
+                            <div class="white">科学技术奖评价管理系统</div>
+                        </h1>
+                        <h4 class="white">&copy; 中国水土保持学会</h4>
+                    </div>
+
+                    <div class="space-6"></div>
+
+                    <div class="position-relative">
+                        <div id="login-box" class="login-box visible widget-box no-border" style="background: none">
+                            <div class="widget-body">
+                                <div class="widget-main">
+
+                                    {% if error_message %}
+
+                                        <div class="col-sm-12">
+
+
+                                            <div class="well well-lg red">
+                                                提示：{{ error_message }}
+
+                                            </div>
+
+                                        </div><!-- /span -->
+                                    {% endif %}
+
+                                    <h4 class="header blue lighter bigger">
+                                        <i class="icon-coffee green"></i>
+                                        请输入您的登陆信息
+                                    </h4>
+
+                                    <div class="space-6"></div>
+
+                                    <form action="{% url 'kjj_login' %}" method="post" id="id_kjj_login">
+                                        {% csrf_token %}
+                                        <fieldset>
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control validate[required]"
+                                                                   placeholder="用户名" name="username" value="{{ username }}"/>
+															<i class="icon-user"></i>
+														</span>
+                                            </label>
+
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password"
+                                                                   class="form-control validate[required]"
+                                                                   placeholder="密码" name="password"/>
+															<i class="icon-lock"></i>
+														</span>
+                                            </label>
+
+                                            <div class="space"></div>
+
+                                            <div class="clearfix">
+
+                                                <button type="button" class="width-45 pull-left btn btn-sm btn-primary"
+                                                        href="kjj_notice.html" onclick="this.form.submit()">
+                                                    <i class="icon-user"></i>
+                                                    普通用户登陆
+                                                </button>
+
+
+                                                <button type="button" class="width-45 pull-right btn btn-sm btn-success"
+                                                   href="kjj_admin_notice.html" onclick="admin_login()">
+                                                    <i class="icon-adn"></i>
+                                                    管理员用户登陆
+                                                </button>
+                                            </div>
+
+                                            <div class="space-4"></div>
+                                        </fieldset>
+                                    </form>
+
+
+                                </div><!-- /widget-main -->
+
+                                <div class="toolbar clearfix">
+                                    <div>
+                                        <a href="http://www.sbxh.org" class="forgot-password-link">
+                                            <i class="icon-arrow-left"></i>
+                                            返回学会网站
+                                        </a>
+                                    </div>
+
+                                    <div>
+                                        <a href="#" onclick="show_box('forgot-box'); return false;"
+                                           class="forgot-password-link">
+                                            忘记登陆密码
+                                            <i class="icon-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div><!-- /widget-body -->
+                        </div><!-- /login-box -->
+
+                        <div id="forgot-box" class="forgot-box widget-box no-border">
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <h4 class="header red lighter bigger">
+                                        <i class="icon-key"></i>
+                                        查找丢失的密码
+                                    </h4>
+
+                                    <div class="space-6"></div>
+                                    <p>
+                                        请输入您的邮箱信息
+                                    </p>
+
+                                    <form>
+                                        <fieldset>
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" class="form-control"
+                                                                   placeholder="Email"/>
+															<i class="icon-envelope"></i>
+														</span>
+                                            </label>
+
+                                            <div class="clearfix">
+                                                <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
+                                                    <i class="icon-lightbulb"></i>
+                                                    发送邮件!
+                                                </button>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div><!-- /widget-main -->
+
+                                <div class="toolbar center">
+                                    <a href="#" onclick="show_box('login-box'); return false;"
+                                       class="back-to-login-link">
+                                        返回登陆
+                                        <i class="icon-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div><!-- /widget-body -->
+                        </div><!-- /forgot-box -->
+
+
+                    </div><!-- /position-relative -->
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+{#		<script src="http://ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>#}
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+{#<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>#}
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/static/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='/static/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+
+<script type="text/javascript">
+    if ("ontouchend" in document) document.write("<script src='/static/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+</script>
+
+<!-- page specific plugin scripts -->
+
+<script src="{% static 'js/jquery.validationEngine.js' %}"></script>
+<script src="{% static 'js/languages/jquery.validationEngine-zh_CN.js' %}"></script>
+
+<!-- inline scripts related to this page -->
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#id_kjj_login').validationEngine();
+
+    });
+
+
+    function show_box(id) {
+        jQuery('.widget-box.visible').removeClass('visible');
+        jQuery('#' + id).addClass('visible');
+    }
+
+    function admin_login() {
+        $('#id_kjj_login').attr('action', '{% url 'kjj_admin_login' %}');
+        if($('#id_kjj_login').validationEngine()){
+            $('#id_kjj_login').submit();
+        }
+
+    }
+</script>
+
+</body>
+</html>
